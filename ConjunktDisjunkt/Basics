@@ -1,0 +1,59 @@
+#conjunct and disjunct chords
+
+def chord(intervals):
+  chord = [0]
+  for i in intervals:
+    chord.append((chord[-1] + i) % 12)
+  return chord
+
+def chordList(chord):
+  chordList = [chord]
+  for i in range(1, 12):
+    chordList.append([((note+i) % 12) for note in chord])
+  return chordList
+
+def invert(chord):
+  newChord = [((12-i) % 12) for i in chord]
+  newChord.sort()
+  return newChord
+
+def invertList(chordList):
+  newList = []
+  for i in chordList:
+    newList.append(invert(i))
+  return newList
+
+def listGen(intervals):
+  c = chord(intervals)
+  cList = chordList(c)
+  print(len(cList))
+  for i in invertList(cList):
+    cList.append(i)
+  print(len(cList))
+  return cList
+
+def conjunkt(chordList, focalNote):
+  conjunktList = []
+  for i in chordList:
+    if focalNote in i:
+      conjunktList.append(i)
+  return conjunktList
+
+def disjunkt(chordList, focalNote):
+  disjunktList = []
+  for i in chordList:
+    if focalNote not in i:
+      disjunktList.append(i)
+  return disjunktList
+
+def CD(chordList, focalNote):
+  con = conjunkt(chordList, focalNote)
+  dis = disjunkt(chordList, focalNote)
+  return [con, dis]
+
+intervals = [2, 1, 3]
+list = listGen(intervals)
+for i in range(12):
+  cd = CD(list, i)
+  print("con: ", len(cd[0]), cd[0])
+  print("dis: ", len(cd[1]), cd[1])
